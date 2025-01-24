@@ -1,22 +1,25 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const productRoutes = require('./routes/productRoutes');
+require("dotenv").config();
+const express = require("express");
+const mongoose = require("mongoose");
+const productRoutes = require("./routes/productRoutes");
 
 const app = express();
 
-//Middlewaer
+// Middleware
 app.use(express.json());
 
-//Conectando ao MongoDB
+// Conectando ao MongoDB
 mongoose
-.connect(process.env.MONGODB_URI)
-.then(() => console.log('Conectado ao MongoDB'))
-.catch(err => console.log(err));
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Conectado ao MongoDB"))
+  .catch((err) => console.error("Erro ao conectar ao MongoDB:", err));
 
-//Rotas
-app.use('/api/products',productRoutes);
+// Rotas
+app.use("/api/products", productRoutes);
 
-//Inicializar servidor
+// Inicializar servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
